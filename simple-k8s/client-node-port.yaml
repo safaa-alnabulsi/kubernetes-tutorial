@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: client-node-port
+spec:
+    type: NodePort # usually we don't use it in production
+    ports:
+      - port: 3050 # for our example this port will not be useful as we do not have other pod need access to multi-client pod
+        targetPort: 3000 # the port inside the pod that we want to open our traffic to.
+        nodePort: 31515 # its range (30000-32767). The one we care about the most. We will access it from the browser to test the multi-client pod
+    selector: # this will be mapped to the componenet with labels: component: web`
+      component: web # web is a custom and not a reserved value, it could be frontend and thus it has to be changed in the other config file

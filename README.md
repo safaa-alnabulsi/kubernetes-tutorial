@@ -3,11 +3,58 @@
 ## Intro 
 
 ### What is Kubernetes?
-System for running many differet containers over multiple different machines
+System for running many differet containers over multiple different machines.
+It is a system to deploy **containerized** apps.
+
 
 ### Why use Kubernetes?
 When you need to run many different containers with different images
 
+### The master
+
+It is a machine (vm) with a set of programs to manage nodes. It gets our desired states from the deployment file.
+It keeps always watching the nodes and make sure the list of the responsibilities is fulfilled. 
+
+### Node vs. Pod vs. Service
+
+#### Node
+
+- it is the machine/ vm where we run the cluster components on.
+
+#### Pod
+
+- Pod lives inside a node.
+- It is a smallest thing we can deploy to run a container.
+- We cannot run a container directly on a cluster in k8s world.
+- Containers needed to run together (coupled together) are deployed to one Pod.
+- A pod can run one or more container inside of it.
+ 
+#### Service
+
+- used to setup networking in the k8s cluster.
+- Sub types:
+    - ClusterIP
+    - NodePort: exposes continaer to the outside world (e.g. access continaer from broswer). Used for dev.
+    - LoadBalancer
+    - Ingress
+
+### Config file attributes
+
+#### apiVersion 
+
+It is the scope of the limit of objects that we can create
+
+- v1: allows us to create objects of type [componentStatus, configMap, Endpoints, Event, Namespace, Pod]
+
+- apps/v1: allows us to create objects of type [ControllerRevision, StatefulSet]
+
+#### kind 
+it is the object type. Examples:
+
+- StatefulSet
+- ReplicaController
+- Pod
+- Service
 
 
 ## Working with Kubernetes
@@ -58,8 +105,46 @@ we use `minikube` to run the cluter and `kubectl` to play with the cli
         Kubernetes master is running at https://192.168.64.2:8443
         KubeDNS is running at https://192.168.64.2:8443/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
 
- 
- 
+##### simple-k8s
+
+- to start the minikube
+
+        $ minikube start
+
+- to feed a config file (deployment file) to the Kubectl (this goes to the kube-apiserver, the master and not to the nodes!)
+        
+        $ kubectl apply -f simple-k8s/client-pod.yaml
+          pod/client-pod created
+
+        $ kubectl apply -f simple-k8s/client-node-port.yaml
+        service/client-node-port created
+
+        
+- to check the status of any object that havve been created
+
+        $ kubectl get pods
+        NAME         READY   STATUS    RESTARTS   AGE
+        client-pod   1/1     Running   0          107s
+        
+        
+        $ kubectl get services
+        NAME               TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
+        client-node-port   NodePort    10.108.124.40   <none>        3050:31515/TCP   3m17s
+        kubernetes         ClusterIP   10.96.0.1       <none>        443/TCP          46h
+
+- to access the multi-client pod from broswer, we need to ask for the IP for the k8s node vm which was created by minikube.
+
+No local host!! http://localhost:31515/ won't work. Instead you have to run:
+
+        $ minikube ip
+        192.168.64.2
+
+Then you can access: http://192.168.64.2:31515/
+        
+##### multi-k8s
+
+
+
 ### Production
 
 EKS for AWS and GKE
