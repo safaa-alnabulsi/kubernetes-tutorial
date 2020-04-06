@@ -53,9 +53,9 @@ it is the object type. Examples:
 
 - StatefulSet
 - ReplicaController
-- Pod
+- Pod (good fo dev only, rarely used directly in production)
 - Service
-
+- Deployment (good for dev and production)
 
 ## Working with Kubernetes
 
@@ -140,8 +140,41 @@ No local host!! http://localhost:31515/ won't work. Instead you have to run:
         192.168.64.2
 
 Then you can access: http://192.168.64.2:31515/
+
+- to get the information of events of lifescycle of an object, run
+
+        $ kubectl describe pod client-pod
+
+- to delete an existing pod
+
+        $ kubectl delete -f simple-k8s/client-pod.yaml
+        pod "client-pod" deleted
+
+- to feed deployment config to kubectl, then get information
+
+        $ kubectl apply -f simple-k8s/client-deployment.yaml
+        deployment.apps/client-deployment created
+
+        $ kubectl get pods 
+        NAME                                 READY   STATUS    RESTARTS   AGE
+        client-deployment-755b85c884-jv25x   1/1     Running   0          15s
         
+        $ kubectl get deployments
+        NAME                READY   UP-TO-DATE   AVAILABLE   AGE
+        client-deployment   1/1     1            1           37s
+
+        $ kubectl get pods -o wide
+        NAME                                 READY   STATUS    RESTARTS   AGE    IP           NODE       NOMINATED NODE   READINESS GATES
+        client-deployment-755b85c884-jv25x   1/1     Running   0          3m4s   172.17.0.4   minikube   <none>           <none>
+
 ##### multi-k8s
+
+- to update the existing pod to use the multi-worker image:
+  
+    - Imperative approach: run a command to update the pod
+   
+    - Declarative approach: update the config file and apply it into kubectl! (preferred)
+    
 
 
 

@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client-deployment
+spec:
+  replicas: 1 # speciifies the number of pods that will be created using the template below
+  selector: # this section will give us handle on the pod that will be created
+    matchLabels:
+      component: web
+  template:
+    metadata:
+      labels:
+        component: web
+    spec:
+      containers:
+        - name: client
+          image: safaa1001/multi-client
+          ports:
+            - containerPort: 3000
