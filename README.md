@@ -175,7 +175,33 @@ like so:
 
         $ kubectl set image Deployment/client-deployment client=safaa1001/multi-client:v1
          
+- to configure the shell to use the vm docker server (only current terminal window)
+        
+        $ eval $(minikube docker-env)
+        $ docker ps # will let you see the copy of docker inside the minikube vm 
+ 
+check: 
+       
+        $ minikube docker-env
+        export DOCKER_TLS_VERIFY="1"
+        export DOCKER_HOST="tcp://ipa-ddress:2376"
+        export DOCKER_CERT_PATH="/Users/myuser/.minikube/certs"
+        # Run this command to configure your shell:
+        # eval $(minikube docker-env)
+and then you can check the logs and login into the container shell. 
 
+- to get logs of a pod with kubectl        
+        
+        $ kubectl get pods
+        NAME                                 READY   STATUS    RESTARTS   AGE
+        client-deployment-7f95ccd89c-xv9c8   1/1     Running   0          60m
+        
+        $ kubectl logs client-deployment-7f95ccd89c-xv9c8
+
+- to start a shell inside the pod with kubectl
+
+        kubectl exec -it client-deployment-7f95ccd89c-xv9c8
+        
 ##### multi-k8s
 
 - to update the existing pod to use the multi-worker image:
