@@ -234,6 +234,8 @@ and then you can check the logs and login into the container shell.
         $ kubectl apply -f k8s
         service/client-cluster-ip-service created
         deployment.apps/client-deployment created
+        service/server-cluster-ip-service created
+        deployment.apps/server-deployment created
 
 
 ### Production
