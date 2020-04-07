@@ -266,6 +266,8 @@ _Note:_ config files can be combined in one with `---` in the middle between obj
         kubernetes                  ClusterIP   10.96.0.1      <none>        443/TCP    3d23h
         server-cluster-ip-service   ClusterIP   10.96.182.56   <none>        5000/TCP   9m48s
 
+Note: i did the same after creating the redis and postgres parts
+
 ### Production
 
 EKS for AWS and GKE
