@@ -240,6 +240,31 @@ and then you can check the logs and login into the container shell.
 
 _Note:_ config files can be combined in one with `---` in the middle between objects.
 
+- to check all created objects
+
+        $ kubectl get pods
+        NAME                                 READY   STATUS    RESTARTS   AGE
+        client-deployment-f6bfd4576-fc58n    1/1     Running   0          20m
+        client-deployment-f6bfd4576-r6n4k    1/1     Running   0          20m
+        client-deployment-f6bfd4576-x4xgl    1/1     Running   0          20m
+        server-deployment-676666b8df-4knx9   1/1     Running   0          9m33s
+        server-deployment-676666b8df-pb6c4   1/1     Running   0          9m34s
+        server-deployment-676666b8df-rlnm9   1/1     Running   0          9m33s
+        worker-deployment-7976d9d9f8-vdpv7   1/1     Running   0          89s
+        
+        
+        $ kubectl get deployments
+        NAME                READY   UP-TO-DATE   AVAILABLE   AGE
+        client-deployment   3/3     3            3           20m
+        server-deployment   3/3     3            3           9m44s
+        worker-deployment   1/1     1            1           99s
+        
+        
+        $ kubectl get services
+        NAME                        TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)    AGE
+        client-cluster-ip-service   ClusterIP   10.96.8.77     <none>        3000/TCP   20m
+        kubernetes                  ClusterIP   10.96.0.1      <none>        443/TCP    3d23h
+        server-cluster-ip-service   ClusterIP   10.96.182.56   <none>        5000/TCP   9m48s
 
 ### Production
 
