@@ -167,6 +167,15 @@ Then you can access: http://192.168.64.2:31515/
         NAME                                 READY   STATUS    RESTARTS   AGE    IP           NODE       NOMINATED NODE   READINESS GATES
         client-deployment-755b85c884-jv25x   1/1     Running   0          3m4s   172.17.0.4   minikube   <none>           <none>
 
+- it is so challanging to update the image to the latest version, so we do the following imperative way:
+
+        $ kubectl set image <Object-type>/<object-name> <container-name from deployment config file>=<full-path to image with version>
+
+like so:
+
+        $ kubectl set image Deployment/client-deployment client=safaa1001/multi-client:v1
+         
+
 ##### multi-k8s
 
 - to update the existing pod to use the multi-worker image:
