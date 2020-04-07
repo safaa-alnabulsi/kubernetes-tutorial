@@ -57,6 +57,14 @@ it is the object type. Examples:
 - Service
 - Deployment (good for dev and production)
 
+### Imperative vs. Declarative approach
+
+to update the existing pod to use the another image:
+  
+- Imperative approach: run a command to update the pod
+
+- Declarative approach: update the config file and apply it into kubectl! (preferred)  
+
 ## Working with Kubernetes
 
 ### Development 
@@ -204,13 +212,28 @@ and then you can check the logs and login into the container shell.
         
 ##### multi-k8s
 
-- to update the existing pod to use the multi-worker image:
-  
-    - Imperative approach: run a command to update the pod
-   
-    - Declarative approach: update the config file and apply it into kubectl! (preferred)
-    
+- first you have to delete the previous testing deployment
 
+        $ kubectl get deployments
+        NAME                READY   UP-TO-DATE   AVAILABLE   AGE
+        client-deployment   1/1     1            1           25h
+        
+        $ kubectl delete deployment client-deployment
+        deployment.apps "client-deployment" deleted
+     
+        $ kubectl get services
+        NAME               TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
+        client-node-port   NodePort    10.108.124.40   <none>        3050:31515/TCP   2d
+        kubernetes         ClusterIP   10.96.0.1       <none>        443/TCP          3d22h
+        
+        $ kubectl delete service client-node-port
+        service "client-node-port" deleted
+
+- then we start applying the new config files we have created inside `k8s` folder:
+
+        $ kubectl apply -f k8s
+        service/client-cluster-ip-service created
+        deployment.apps/client-deployment created
 
 
 ### Production
