@@ -229,13 +229,16 @@ and then you can check the logs and login into the container shell.
         $ kubectl delete service client-node-port
         service "client-node-port" deleted
 
-- then we start applying the new config files we have created inside `k8s` folder:
+- then we start applying the new config files we have created inside `k8s folder:
 
         $ kubectl apply -f k8s
         service/client-cluster-ip-service created
         deployment.apps/client-deployment created
         service/server-cluster-ip-service created
         deployment.apps/server-deployment created
+        deployment.apps/worker-deployment created
+
+_Note:_ config files can be combined in one with `---` in the middle between objects.
 
 
 ### Production
