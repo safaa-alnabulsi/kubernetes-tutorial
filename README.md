@@ -56,6 +56,7 @@ it is the object type. Examples:
 - Pod (good fo dev only, rarely used directly in production)
 - Service
 - Deployment (good for dev and production)
+- Volume: an object that allows a container to store data at all the pod level
 
 ### Imperative vs. Declarative approach
 
@@ -267,6 +268,12 @@ _Note:_ config files can be combined in one with `---` in the middle between obj
         server-cluster-ip-service   ClusterIP   10.96.182.56   <none>        5000/TCP   9m48s
 
 Note: i did the same after creating the redis and postgres parts
+
+- **Volumes**: to avoid losing all the data we have inside postgres as soon as the pod or the container crashes, 
+we need to have a **volume** on the host machine that have a consistent file system that can be accessed by a database like postgres.
+If the pod craches, the deployment will create a new one and it will be pointed to that volume. 
+Be aware of not having two replicas accessing the same volume. You need to add more configuration for that.
+
 
 ### Production
 
