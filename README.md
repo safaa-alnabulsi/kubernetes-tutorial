@@ -57,6 +57,11 @@ it is the object type. Examples:
 - Service
 - Deployment (good for dev and production)
 - Volume: an object that allows a container to store data at all the pod level
+- Persistent Volume Claim: it's like an ad of options [statically provisioned PV (already created), dynamically provisioned PV (created on the fly)] 
+  Access Modes:
+    - ReadWriteOnce: can be used by a single node 
+    - ReadOnlyMany: multiple nodes can read from this
+    - ReadWriteMany: can be read and written to by many nodes
 
 ### Imperative vs. Declarative approach
 
@@ -274,7 +279,26 @@ we need to have a **volume** on the host machine that have a consistent file sys
 If the pod craches, the deployment will create a new one and it will be pointed to that volume. 
 Be aware of not having two replicas accessing the same volume. You need to add more configuration for that.
 
+        $ kubectl get storageclass 
+        NAME                 PROVISIONER                AGE
+        standard (default)   k8s.io/minikube-hostpath   5d3h
+        
+        $ kubectl describe storageclass
+        Name:                  standard
+        IsDefaultClass:        Yes
+        Annotations:           storageclass.kubernetes.io/is-default-class=true
+        Provisioner:           k8s.io/minikube-hostpath
+        Parameters:            <none>
+        AllowVolumeExpansion:  <unset>
+        MountOptions:          <none>
+        ReclaimPolicy:         Delete
+        VolumeBindingMode:     Immediate
+        Events:                <none>
+
 
 ### Production
 
 EKS for AWS and GKE
+
+## Refernces
+- [Storage Classes Provisioner](https://kubernetes.io/docs/concepts/storage/storage-classes/#provisioner)
