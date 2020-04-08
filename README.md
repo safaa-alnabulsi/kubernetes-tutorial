@@ -62,6 +62,7 @@ it is the object type. Examples:
     - ReadWriteOnce: can be used by a single node 
     - ReadOnlyMany: multiple nodes can read from this
     - ReadWriteMany: can be read and written to by many nodes
+- Secret
 
 ### Imperative vs. Declarative approach
 
@@ -318,6 +319,20 @@ Be aware of not having two replicas accessing the same volume. You need to add m
         $ kubectl get pvc
         NAME                               STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
         database-persistent-volume-claim   Bound    pvc-83145502-8132-4bd7-8653-55bfc563b309   2Gi        RWO            standard       43s
+
+- create a secret locally by running:
+
+        $ kubectl create secret generic <secret-name> --from-literal key=value
+
+like so:
+
+        $ kubectl create secret generic pgpassword --from-literal POSTGRES_PASSWORD=password123
+        secret/pgpassword created
+
+        $ kubectl get secrets
+        NAME                  TYPE                                  DATA   AGE
+        default-token-lqcw2   kubernetes.io/service-account-token   3      5d4h
+        pgpassword            Opaque                                1      17s
 
 ### Production
 
