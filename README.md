@@ -295,6 +295,29 @@ Be aware of not having two replicas accessing the same volume. You need to add m
         VolumeBindingMode:     Immediate
         Events:                <none>
 
+-  after adding the persistent volume claim, apply it to local cluster:
+
+        $ kubectl apply -f k8s
+        service/client-cluster-ip-service unchanged
+        deployment.apps/client-deployment unchanged
+        persistentvolumeclaim/database-persistent-volume-claim created
+        service/postgres-cluster-ip-service unchanged
+        deployment.apps/postgres-deployment configured
+        service/redis-cluster-ip-service unchanged
+        deployment.apps/redis-deployment unchanged
+        service/server-cluster-ip-service unchanged
+        deployment.apps/server-deployment unchanged
+        deployment.apps/worker-deployment unchanged
+
+- get information about the created pv and pvs
+        
+        $ kubectl get pv
+        NAME                                       CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM                                      STORAGECLASS   REASON   AGE
+        pvc-83145502-8132-4bd7-8653-55bfc563b309   2Gi        RWO            Delete           Bound    default/database-persistent-volume-claim   standard                18s
+
+        $ kubectl get pvc
+        NAME                               STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+        database-persistent-volume-claim   Bound    pvc-83145502-8132-4bd7-8653-55bfc563b309   2Gi        RWO            standard       43s
 
 ### Production
 
