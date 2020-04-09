@@ -33,10 +33,10 @@ It keeps always watching the nodes and make sure the list of the responsibilitie
 
 - used to setup networking in the k8s cluster.
 - Sub types:
-    - ClusterIP
-    - NodePort: exposes continaer to the outside world (e.g. access continaer from broswer). Used for dev.
-    - LoadBalancer
-    - Ingress
+    - ClusterIP: exposes a set of pods to other objects in the cluster
+    - NodePort: exposes continaer (set of pods) to the outside world (e.g. access continaer from broswer). Used for dev.
+    - LoadBalancer: legacy way of getting network traffic into a cluster
+    - Ingress: exposes a set of services to the outside world
 
 ### Config file attributes
 
@@ -48,21 +48,24 @@ It is the scope of the limit of objects that we can create
 
 - apps/v1: allows us to create objects of type [ControllerRevision, StatefulSet]
 
+- extensions/v1beta1: 
+
 #### kind 
 it is the object type. Examples:
 
 - StatefulSet
 - ReplicaController
 - Pod (good fo dev only, rarely used directly in production)
-- Service
-- Deployment (good for dev and production)
+- Service: setup networking in k8s cluster
+- Deployment: pods (good for dev and production)
 - Volume: an object that allows a container to store data at all the pod level
 - Persistent Volume Claim: it's like an ad of options [statically provisioned PV (already created), dynamically provisioned PV (created on the fly)] 
   Access Modes:
     - ReadWriteOnce: can be used by a single node 
     - ReadOnlyMany: multiple nodes can read from this
     - ReadWriteMany: can be read and written to by many nodes
-- Secret
+- Secret: securely stores a piece of information into a cluster e.g. db password
+- Ingress
 
 ### Imperative vs. Declarative approach
 
@@ -334,9 +337,59 @@ like so:
         default-token-lqcw2   kubernetes.io/service-account-token   3      5d4h
         pgpassword            Opaque                                1      17s
 
+###### Traffic
+
+We won't use `Load balancer` because we need to expose two pods to the outside: server and client. 
+Rather we will use "Ingress config" which will create "Ingress controller". The ingress controller will make something that accept incoming traffic. 
+Following this [docs](https://kubernetes.github.io/ingress-nginx/deploy/#prerequisite-generic-deployment-command):
+
+1. Make sure you executed the mandatory generic script that was discussed in the lecture:
+
+
+        $ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/nginx-0.30.0/deploy/static/mandatory.yaml
+        namespace/ingress-nginx created
+        configmap/nginx-configuration created
+        configmap/tcp-services created
+        configmap/udp-services created
+        serviceaccount/nginx-ingress-serviceaccount created
+        clusterrole.rbac.authorization.k8s.io/nginx-ingress-clusterrole created
+        role.rbac.authorization.k8s.io/nginx-ingress-role created
+        rolebinding.rbac.authorization.k8s.io/nginx-ingress-role-nisa-binding created
+        clusterrolebinding.rbac.authorization.k8s.io/nginx-ingress-clusterrole-nisa-binding created
+        deployment.apps/nginx-ingress-controller created
+        limitrange/ingress-nginx created
+
+        $ minikube addons enable ingress
+        ✅  ingress was successfully enabled
+
+2. Execute the provider specific script to enable the service:
+
+
+        $ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/cloud-generic.yaml
+        service/ingress-nginx created
+
+3. Verify the service was enabled by running the following:
+
+
+        $ kubectl get svc -n ingress-nginx
+        NAME            TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)                      AGE
+        ingress-nginx   LoadBalancer   10.106.173.62   <pending>     80:32553/TCP,443:32460/TCP   5m18s
+
+- apply the ingress config with kubectl
+        
+        $ kubectl apply -f k8s
+
+Then get the ip and access it from browser without port.
+
+- A very interesting command, to see the K8S UI
+
+        $ minikube dashboard
+
 ### Production
 
 EKS for AWS and GKE
 
 ## Refernces
 - [Storage Classes Provisioner](https://kubernetes.io/docs/concepts/storage/storage-classes/#provisioner)
+- [NGINX Ingress Controller for Kubernetes Repo](https://github.com/kubernetes/ingress-nginx)
+- [Studying the Kubernetes Ingress system, article by Hongli Lai ](https://www.joyfulbikeshedding.com/blog/2018-03-26-studying-the-kubernetes-ingress-system.html)
