@@ -123,7 +123,7 @@ we use `minikube` to run the cluter and `kubectl` to play with the cli
         Kubernetes master is running at https://192.168.64.2:8443
         KubeDNS is running at https://192.168.64.2:8443/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
 
-##### simple-k8s
+#### simple-k8s
 
 - to start the minikube
 
@@ -220,7 +220,7 @@ and then you can check the logs and login into the container shell.
 
         kubectl exec -it client-deployment-7f95ccd89c-xv9c8
         
-##### multi-k8s
+#### multi-k8s
 
 - first you have to delete the previous testing deployment
 
@@ -387,7 +387,7 @@ Then get the ip and access it from browser without port.
 
 ### Production
 
-EKS for AWS and GKE
+EKS for AWS and GKE for Google.
 
 ## Refernces
 - [Storage Classes Provisioner](https://kubernetes.io/docs/concepts/storage/storage-classes/#provisioner)
