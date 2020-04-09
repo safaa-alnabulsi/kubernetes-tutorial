@@ -337,7 +337,7 @@ like so:
         default-token-lqcw2   kubernetes.io/service-account-token   3      5d4h
         pgpassword            Opaque                                1      17s
 
-###### Traffic
+#### Traffic
 
 We won't use `Load balancer` because we need to expose two pods to the outside: server and client. 
 Rather we will use "Ingress config" which will create "Ingress controller". The ingress controller will make something that accept incoming traffic. 
@@ -390,6 +390,7 @@ Then get the ip and access it from browser without port.
 EKS for AWS and GKE for Google.
 
 ## Refernces
+- [Docker and Kubernetes: The Complete Guide Udemy Course](https://www.udemy.com/course/docker-and-kubernetes-the-complete-guide/)
 - [Storage Classes Provisioner](https://kubernetes.io/docs/concepts/storage/storage-classes/#provisioner)
 - [NGINX Ingress Controller for Kubernetes Repo](https://github.com/kubernetes/ingress-nginx)
 - [Studying the Kubernetes Ingress system, article by Hongli Lai ](https://www.joyfulbikeshedding.com/blog/2018-03-26-studying-the-kubernetes-ingress-system.html)
